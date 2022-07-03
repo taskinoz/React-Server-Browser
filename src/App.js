@@ -57,8 +57,10 @@ function App() {
   const checkPassword = (e, password) => {
     if (password) {
       e.preventDefault()
-      alert("hi")
+      let serverPassword = prompt("Enter Password:");
+      window.location.href = `${e.target.href}:${btoa(serverPassword)}`;
     }
+    window.location.href = e.target.href;
   }
 
   return (
@@ -66,7 +68,6 @@ function App() {
 
       {servers.length <= 0 &&
       <Spinner>
-        {console.log("here")}
         <FontAwesomeIcon size="2x" icon={faSpinner} />
         fetching servers...
       </Spinner>
