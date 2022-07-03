@@ -1,7 +1,7 @@
 import './App.scss';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faSpinner, faPlay } from '@fortawesome/free-solid-svg-icons';
 import {maps} from './data/maps';
 import {gamemodes} from './data/gamemodes';
 import styled from 'styled-components';
@@ -39,9 +39,31 @@ const Spinner = styled.div`
     }
 `;
 
+const Row = styled.tr`
+  cursor: pointer;
+  ${props => props.active?"height: 100px":""}
+`;
+
+const checkPassword = (e, password) => {
+    if (password) {
+      e.preventDefault()
+      let serverPassword = prompt("Enter Password:");
+      window.location.href = `${e.target.href}:${btoa(serverPassword)}`;
+    }
+    window.location.href = e.target.href;
+  }
+
+  const description = (desc, active) => {
+    if (desc.length > 100 && !active) {
+      return desc.slice(0,100)+"..."
+    }
+    return desc
+  }
+
 
 function App() {
   const [servers, setServers] = useState([]);
+  const [active, setActive] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch('https://northstar.tf/client/servers')
@@ -54,14 +76,14 @@ function App() {
     fetchData()
   },[])
 
-  const checkPassword = (e, password) => {
-    if (password) {
-      e.preventDefault()
-      let serverPassword = prompt("Enter Password:");
-      window.location.href = `${e.target.href}:${btoa(serverPassword)}`;
+  const makeActive = (index) => {
+    if (active === index) {
+      setActive("");
     }
-    window.location.href = e.target.href;
-  }
+    else {
+      setActive(index)
+    }
+  };
 
   return (
     <div className="App">
@@ -88,10 +110,10 @@ function App() {
         </thead>
         <tbody>
           {servers.map((server,index)=>
-          <tr key={index}>
+          <Row active={active == index} key={index} onClick={() => makeActive(index)}>
             <td className='password'>{server.hasPassword && <FontAwesomeIcon icon={faLock} />}</td>
             <td className='server'>{server.name}</td>
-            <td className='description'>{server.description}</td> 
+            <td className='description'>{description(server.description, active == index)}</td> 
             <td className='players'>{server.playerCount}/{server.maxPlayers}</td> 
             <td className='map'>{maps[server.map] ?? server.map}</td> 
             <td className='mode'>{gamemodes[server.playlist]?? server.playlist}</td>
@@ -100,10 +122,10 @@ function App() {
               <a 
                 href={`northstar://server@${server.id}`}
                 onClick={(e) => checkPassword(e,server.hasPassword)}
-              >Join</a>
+              ><FontAwesomeIcon icon={faPlay} /></a>
             </td>
 
-          </tr>
+          </Row>
           )}
         </tbody>
       </StyledTable>}
