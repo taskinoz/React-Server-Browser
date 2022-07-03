@@ -1,7 +1,7 @@
 import './App.scss';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import {maps} from './data/maps';
 import {gamemodes} from './data/gamemodes';
 import styled from 'styled-components';
@@ -19,6 +19,24 @@ const StyledTable = styled.table`
   .communities {
     text-align: center;
   }
+`;
+
+const Spinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  font-size: 20px;
+  svg {
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+  }
+  @keyframes spin {
+      from {transform: rotate(0deg)}
+      to {transform: rotate(360deg)}
+    }
 `;
 
 
@@ -45,8 +63,16 @@ function App() {
 
   return (
     <div className="App">
+
+      {servers.length <= 0 &&
+      <Spinner>
+        {console.log("here")}
+        <FontAwesomeIcon size="2x" icon={faSpinner} />
+        fetching servers...
+      </Spinner>
+      }
       
-      <StyledTable>
+      {servers && servers.length > 0 && <StyledTable>
         <thead>
           <tr>
             <th></th>
@@ -60,7 +86,7 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {servers.length > 0 && servers.map((server,index)=>
+          {servers.map((server,index)=>
           <tr key={index}>
             <td className='password'>{server.hasPassword && <FontAwesomeIcon icon={faLock} />}</td>
             <td className='server'>{server.name}</td>
@@ -79,8 +105,7 @@ function App() {
           </tr>
           )}
         </tbody>
-      </StyledTable>
-        
+      </StyledTable>}
       
     </div>
   );
