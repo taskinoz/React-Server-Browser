@@ -49,7 +49,7 @@ const Communities = ({desc}) => {
   return (
     <>
       {(Object.keys(communities)).map(community => 
-        <Link className={community} href={communities[community].link} target="_blank">{communities[community].icon}</Link>
+        <Link key={community} className={community} href={communities[community].link} target="_blank">{communities[community].icon}</Link>
       )}
     </>
     );
