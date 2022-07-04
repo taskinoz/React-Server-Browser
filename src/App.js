@@ -44,7 +44,8 @@ const Row = styled.tr`
   ${props => props.active?"height: 100px":""}
 `;
 
-//Comparer Function    
+// Comparer Function
+// https://www.c-sharpcorner.com/UploadFile/fc34aa/sort-json-object-array-based-on-a-key-attribute-in-javascrip/  
 const GetSortOrder = (prop) => {    
   return (a, b) => {    
     if (a[prop] > b[prop]) {    
@@ -131,7 +132,9 @@ function App() {
 
   const filterIcon = (name) => {
     if (filter===name) {
-      let icon = filterDirection==="asc"?<FontAwesomeIcon icon={faArrowDown} />:<FontAwesomeIcon icon={faArrowUp} />
+      let icon = filterDirection==="asc"?
+      <FontAwesomeIcon icon={faArrowDown} />
+      :<FontAwesomeIcon icon={faArrowUp} />
       return icon;
     }
   };
