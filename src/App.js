@@ -78,7 +78,7 @@ const filterServers = (filter, direction, array) => {
     if (direction === "asc") {
       return array.sort(GetSortOrder(filter))
     }
-    else if (direction === 'desc') {
+    else if (direction === 'dec') {
       array.sort(GetSortOrder(filter))
       return array.reverse();
     }
@@ -106,7 +106,17 @@ function App() {
 
   const updateFilters = (filterName) => {
     if (filter === filterName ) {
-      
+      if (filterDirection === "asc"){
+        setFilter(filterName);
+        setFilterDirection("dec");
+      }
+      else {
+        setFilter("");
+        setFilterDirection("asc");
+      }
+    }
+    else {
+      setFilter(filterName);
     }
   }
 
@@ -132,12 +142,12 @@ function App() {
       {servers && servers.length > 0 && <StyledTable>
         <thead>
           <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Players</th>
-            <th>Map</th>
-            <th>Gamemode</th>
+            <th onClick={() => updateFilters("hasPassword")}></th>
+            <th onClick={() => updateFilters("name")}>Name</th>
+            <th onClick={() => updateFilters("description")}>Description</th>
+            <th onClick={() => updateFilters("playerCount")}>Players</th>
+            <th onClick={() => updateFilters("map")}>Map</th>
+            <th onClick={() => updateFilters("playlist")}>Gamemode</th>
             <th>Community</th>
             <th>Join</th>
           </tr>
