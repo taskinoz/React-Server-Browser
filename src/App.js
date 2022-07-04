@@ -1,7 +1,7 @@
 import './App.scss';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faSpinner, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faSpinner, faPlay, faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import {maps} from './data/maps';
 import {gamemodes} from './data/gamemodes';
 import styled from 'styled-components';
@@ -102,7 +102,7 @@ function App() {
       fetchData()
     }, 1000*30)
     fetchData()
-  },[])
+  },[filter])
 
   const updateFilters = (filterName) => {
     if (filter === filterName ) {
@@ -129,6 +129,13 @@ function App() {
     }
   };
 
+  const filterIcon = (name) => {
+    if (filter===name) {
+      let icon = filterDirection==="asc"?<FontAwesomeIcon icon={faArrowDown} />:<FontAwesomeIcon icon={faArrowUp} />
+      return icon;
+    }
+  };
+
   return (
     <div className="App">
 
@@ -142,12 +149,12 @@ function App() {
       {servers && servers.length > 0 && <StyledTable>
         <thead>
           <tr>
-            <th onClick={() => updateFilters("hasPassword")}></th>
-            <th onClick={() => updateFilters("name")}>Name</th>
-            <th onClick={() => updateFilters("description")}>Description</th>
-            <th onClick={() => updateFilters("playerCount")}>Players</th>
-            <th onClick={() => updateFilters("map")}>Map</th>
-            <th onClick={() => updateFilters("playlist")}>Gamemode</th>
+            <th onClick={() => updateFilters("hasPassword")}> {filterIcon("hasPassword")}</th>
+            <th onClick={() => updateFilters("name")}>Name {filterIcon("name")}</th>
+            <th onClick={() => updateFilters("description")}>Description {filterIcon("description")}</th>
+            <th onClick={() => updateFilters("playerCount")}>Players {filterIcon("playerCount")}</th>
+            <th onClick={() => updateFilters("map")}>Map {filterIcon("map")}</th>
+            <th onClick={() => updateFilters("playlist")}>Gamemode {filterIcon("playlist")}</th>
             <th>Community</th>
             <th>Join</th>
           </tr>
