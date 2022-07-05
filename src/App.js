@@ -6,6 +6,12 @@ import {maps} from './data/maps';
 import {gamemodes} from './data/gamemodes';
 import styled from 'styled-components';
 import Communities from './Components/Community';
+import {
+  GetSortOrder,
+  checkPassword,
+  description,
+  filterServers,
+} from './lib/funcs'
 
 const StyledTable = styled.table`
   tr:nth-child(odd) {
@@ -43,49 +49,6 @@ const Row = styled.tr`
   cursor: pointer;
   ${props => props.active?"height: 100px":""}
 `;
-
-// Comparer Function
-// https://www.c-sharpcorner.com/UploadFile/fc34aa/sort-json-object-array-based-on-a-key-attribute-in-javascrip/  
-const GetSortOrder = (prop) => {    
-  return (a, b) => {    
-    if (a[prop] > b[prop]) {    
-        return 1;    
-    } else if (a[prop] < b[prop]) {    
-        return -1;    
-    }    
-    return 0;  
-  }    
-}
-
-const checkPassword = (e, password) => {
-  if (password) {
-    e.preventDefault()
-    let serverPassword = prompt("Enter Password:");
-    window.location.href = `${e.target.href}:${btoa(serverPassword)}`;
-  }
-  window.location.href = e.target.href;
-}
-
-const description = (desc, active) => {
-  if (desc.length > 100 && !active) {
-    return desc.slice(0,100)+"..."
-  }
-  return desc
-}
-
-
-const filterServers = (filter, direction, array) => {
-  if (filter) {
-    if (direction === "asc") {
-      return array.sort(GetSortOrder(filter))
-    }
-    else if (direction === 'dec') {
-      array.sort(GetSortOrder(filter))
-      return array.reverse();
-    }
-  }
-  return array;
-}
 
 function App() {
   const [servers, setServers] = useState([]);
