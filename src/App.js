@@ -11,6 +11,7 @@ import {
   checkPassword,
   description,
   filterServers,
+  discordUser,
 } from './lib/funcs'
 
 const StyledTable = styled.table`
@@ -117,6 +118,7 @@ function App() {
           <tr>
             <th onClick={() => updateFilters("hasPassword")}> {filterIcon("hasPassword")}</th>
             <th onClick={() => updateFilters("name")}>Name {filterIcon("name")}</th>
+            <th>User</th>
             <th onClick={() => updateFilters("description")}>Description {filterIcon("description")}</th>
             <th onClick={() => updateFilters("playerCount")}>Players {filterIcon("playerCount")}</th>
             <th onClick={() => updateFilters("map")}>Map {filterIcon("map")}</th>
@@ -132,6 +134,7 @@ function App() {
               <Row active={isActive} key={index} onClick={() => makeActive(index)}>
                 <td className='password'>{server.hasPassword && <FontAwesomeIcon icon={faLock} />}</td>
                 <td className='server'>{server.name}</td>
+                <td className='user'>{discordUser(server.description)}</td>
                 <td className='description'>{description(server.description, isActive)}</td> 
                 <td className='players'>{server.playerCount}/{server.maxPlayers}</td> 
                 <td className='map'>{maps[server.map] ?? server.map}</td> 

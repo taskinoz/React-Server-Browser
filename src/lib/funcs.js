@@ -27,6 +27,10 @@ export const description = (desc, active) => {
     return desc
 }
 
+export const discordUser = (desc) => {
+    return desc.match(/\w+#\d{4}/g)
+}
+
 export const filterServers = (filter, direction, array) => {
     if (filter) {
         if (direction === "asc") {
